@@ -1,37 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/23 13:50:59 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/03/05 14:13:24 by lzi-xian         ###   ########.fr       */
+/*   Created: 2022/10/07 17:04:13 by lzi-xian          #+#    #+#             */
+/*   Updated: 2022/10/11 14:11:02 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include "libft/libft.h"
-# include <stdlib.h>
-# include <dirent.h> 
-# include <stdio.h>
-# include <limits.h>
-# include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-
-typedef struct s_mini
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void*))
 {
-	char	*res;
-	char	*line;
-	char	**env;
-	char	**file;
-	char	**line_list;
-}	t_mini;
+	t_list	*iter;
+	t_list	*temp;
 
-void	ft_echo(t_mini *mini);
-void	ft_cd(char **env);
-
-#endif
+	temp = NULL;
+	while (lst)
+	{
+		iter = ft_lstnew(f(lst -> content));
+		if (!iter)
+		{
+			ft_lstclear(&iter, del);
+			return (NULL);
+		}
+		ft_lstadd_back(&temp, iter);
+		lst = lst -> next;
+	}
+	return (temp);
+}

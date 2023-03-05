@@ -1,37 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/23 13:50:59 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/03/05 14:13:24 by lzi-xian         ###   ########.fr       */
+/*   Created: 2022/10/06 16:25:18 by lzi-xian          #+#    #+#             */
+/*   Updated: 2022/10/06 16:30:06 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include "libft/libft.h"
-# include <stdlib.h>
-# include <dirent.h> 
-# include <stdio.h>
-# include <limits.h>
-# include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-
-typedef struct s_mini
+void	ft_striteri(char *s, void (*f)(unsigned int, char *))
 {
-	char	*res;
-	char	*line;
-	char	**env;
-	char	**file;
-	char	**line_list;
-}	t_mini;
+	unsigned int	i;
 
-void	ft_echo(t_mini *mini);
-void	ft_cd(char **env);
-
-#endif
+	i = 0;
+	if (!s)
+		return ;
+	while (s[i])
+	{
+		f(i, &s[i]);
+		i++;
+	}
+}

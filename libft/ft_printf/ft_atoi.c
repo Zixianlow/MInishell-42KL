@@ -1,37 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/23 13:50:59 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/03/05 14:13:24 by lzi-xian         ###   ########.fr       */
+/*   Created: 2022/08/23 18:40:39 by lzi-xian          #+#    #+#             */
+/*   Updated: 2022/12/21 14:43:59 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "ft_printf.h"
 
-# include "libft/libft.h"
-# include <stdlib.h>
-# include <dirent.h> 
-# include <stdio.h>
-# include <limits.h>
-# include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-
-typedef struct s_mini
+int	ft_pf_atoi(const char *str)
 {
-	char	*res;
-	char	*line;
-	char	**env;
-	char	**file;
-	char	**line_list;
-}	t_mini;
+	int	i;
+	int	s;
+	int	r;
 
-void	ft_echo(t_mini *mini);
-void	ft_cd(char **env);
-
-#endif
+	i = 0;
+	s = 1;
+	r = 0;
+	while ((str[i] >= 9 && str[i] <= 13) || str[i] == ' ')
+		i++;
+	while (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			s = s * -1;
+		i++;
+	}
+	while (str[i] != '\0')
+	{
+		if (str[i] >= '0' && str[i] <= '9')
+			r = r * 10 + str[i] - '0';
+		else
+			break ;
+		i++;
+	}
+	r = r * s;
+	return (r);
+}

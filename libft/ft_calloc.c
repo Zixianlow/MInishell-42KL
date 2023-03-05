@@ -1,37 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/23 13:50:59 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/03/05 14:13:24 by lzi-xian         ###   ########.fr       */
+/*   Created: 2022/10/04 19:47:19 by lzi-xian          #+#    #+#             */
+/*   Updated: 2022/10/13 15:58:23 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include "libft/libft.h"
-# include <stdlib.h>
-# include <dirent.h> 
-# include <stdio.h>
-# include <limits.h>
-# include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-
-typedef struct s_mini
+void	*ft_calloc(size_t count, size_t size)
 {
-	char	*res;
-	char	*line;
-	char	**env;
-	char	**file;
-	char	**line_list;
-}	t_mini;
+	char	*p;
 
-void	ft_echo(t_mini *mini);
-void	ft_cd(char **env);
-
-#endif
+	if (size != 0 && count >= SIZE_MAX / size)
+		return (NULL);
+	p = (char *) malloc (count * size);
+	if (!p)
+		return (NULL);
+	ft_bzero(p, count * size);
+	return (p);
+}

@@ -1,37 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/23 13:50:59 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/03/05 14:13:24 by lzi-xian         ###   ########.fr       */
+/*   Created: 2022/10/04 20:01:33 by lzi-xian          #+#    #+#             */
+/*   Updated: 2022/10/12 12:18:20 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include "libft/libft.h"
-# include <stdlib.h>
-# include <dirent.h> 
-# include <stdio.h>
-# include <limits.h>
-# include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-
-typedef struct s_mini
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*res;
-	char	*line;
-	char	**env;
-	char	**file;
-	char	**line_list;
-}	t_mini;
+	char	*p;
 
-void	ft_echo(t_mini *mini);
-void	ft_cd(char **env);
-
-#endif
+	if (!s)
+		return (NULL);
+	if (len > (size_t)ft_strlen(s + start))
+		len = ft_strlen(s + start);
+	if (start > (unsigned int)ft_strlen(s))
+		len = 0;
+	p = (char *) malloc ((len + 1) * sizeof(char));
+	if (!p)
+		return (NULL);
+	ft_strlcpy(p, (const char *)(s + start), len + 1);
+	return (p);
+}

@@ -1,37 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_putchar_l.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/23 13:50:59 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/03/05 14:13:24 by lzi-xian         ###   ########.fr       */
+/*   Created: 2022/10/27 16:32:59 by lzi-xian          #+#    #+#             */
+/*   Updated: 2022/12/21 14:49:13 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "ft_printf.h"
 
-# include "libft/libft.h"
-# include <stdlib.h>
-# include <dirent.h> 
-# include <stdio.h>
-# include <limits.h>
-# include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-
-typedef struct s_mini
+t_pf_list	*ft_pf_putchar_flags(t_pf_list *f)
 {
-	char	*res;
-	char	*line;
-	char	**env;
-	char	**file;
-	char	**line_list;
-}	t_mini;
+	f->fhash = 0;
+	f->fspace = 0;
+	f->fdot = 0;
+	f->fplus = 0;
+	if (f->fnum < 2)
+		f->fnum = 0;
+	f->fnum--;
+	f->fzero = 0;
+	return (f);
+}
 
-void	ft_echo(t_mini *mini);
-void	ft_cd(char **env);
-
-#endif
+int	ft_pf_putchar_l(char c, int l)
+{
+	(void)c;
+	l++;
+	return (l);
+}

@@ -6,31 +6,11 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 13:56:11 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/03/02 18:50:42 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/03/05 12:57:08 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	ft_echo(char **list)
-{
-	int	i;
-	int	j;
-
-	i = 1;
-	while (list[i])
-	{
-		j = 0;
-		while (list[i][j])
-		{
-			write(1, &list[i][j], 1);
-			j++;
-		}
-		write(1, " ", 1);
-		i++;
-	}
-	write(1, "\n", 1);
-}
 
 void	ft_print_env(char **env)
 {
@@ -51,6 +31,76 @@ void	ft_print_env(char **env)
 	}
 }
 
+void	ft_pwd(void)
+{
+	char	cwd[PATH_MAX];
+
+	if (getcwd(cwd, sizeof(cwd)) != NULL)
+		printf("%s\n", cwd);
+	else
+		perror("getcwd() error");
+}
+
+void	ft_ls(void)
+{
+	DIR				*d;
+	struct dirent	*dir;
+
+	d = opendir(".");
+	if (d)
+	{
+		dir = readdir(d);
+		if (!dir)
+			return ;
+		while ((dir) != NULL)
+		{
+			printf("%s", dir->d_name);
+			printf(" ");
+			dir = readdir(d);
+		}
+		closedir(d);
+	}
+}
+
+void	ft_get_file(t_mini *mini)
+{
+	DIR				*d;
+	struct dirent	*dir;
+	int				l;
+	int				i;
+
+	l = 0;
+	i = 0;
+	d = opendir(".");
+	if (d)
+	{
+		dir = readdir(d);
+		if (!dir)
+			return ;
+		while ((dir) != NULL)
+		{
+			dir = readdir(d);
+			l++;
+		}
+		closedir(d);
+	}
+	mini->file = malloc(sizeof (char *) * l + 1);
+	d = opendir(".");
+	if (d)
+	{
+		dir = readdir(d);
+		if (!dir)
+			return ;
+		while ((dir) != NULL)
+		{
+			mini->file[i] = ft_strdup(dir->d_name);
+			i++;
+		}
+		closedir(d);
+	}
+	mini->file[i] = NULL;
+}
+
 void	ft_cmd(t_mini	*mini)
 {
 	char	*str;
@@ -61,11 +111,13 @@ void	ft_cmd(t_mini	*mini)
 	else if (!ft_strncmp(str, "exit", 5))
 		exit(0);
 	else if (!ft_strncmp(str, "echo", 5))
-		ft_echo(mini->line_list);
+		ft_echo(mini);
 	else if (!ft_strncmp(str, "cd", 3))
-		printf("cmd = cd\n");
+		ft_cd(mini->env);
+	else if (!ft_strncmp(str, "ls", 3))
+		ft_ls();
 	else if (!ft_strncmp(str, "pwd", 4))
-		printf("cmd = pwd\n");
+		ft_pwd();
 	else if (!ft_strncmp(str, "export", 7))
 		printf("cmd = export\n");
 	else if (!ft_strncmp(str, "unset", 6))
