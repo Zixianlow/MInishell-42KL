@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 13:56:11 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/03/09 16:41:25 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/03/14 19:14:48 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,58 +41,19 @@ void	ft_pwd(void)
 		perror("getcwd() error");
 }
 
-// void	ft_get_file(t_mini *mini)
-// {
-// 	DIR				*d;
-// 	struct dirent	*dir;
-// 	int				l;
-// 	int				i;
-
-// 	l = 0;
-// 	i = 0;
-// 	d = opendir(".");
-// 	if (d)
-// 	{
-// 		dir = readdir(d);
-// 		if (!dir)
-// 			return ;
-// 		while ((dir) != NULL)
-// 		{
-// 			dir = readdir(d);
-// 			l++;
-// 		}
-// 		closedir(d);
-// 	}
-// 	mini->file = malloc(sizeof (char *) * l + 1);
-// 	d = opendir(".");
-// 	if (d)
-// 	{
-// 		dir = readdir(d);
-// 		if (!dir)
-// 			return ;
-// 		while ((dir) != NULL)
-// 		{
-// 			mini->file[i] = ft_strdup(dir->d_name);
-// 			i++;
-// 		}
-// 		closedir(d);
-// 	}
-// 	mini->file[i] = NULL;
-// }
-
-void	ft_cmd(t_mini	*mini)
+void	ft_cmd(t_mini	*mini, char **line)
 {
 	char	*str;
 
-	str = mini->line_list[0];
+	str = line[0];
 	if (!str)
 		return ;
 	else if (!ft_strncmp(str, "exit", 5))
 		exit(0);
 	else if (!ft_strncmp(str, "echo", 5))
-		ft_echo(mini);
+		ft_echo(mini, line);
 	else if (!ft_strncmp(str, "cd", 3))
-		ft_cd(mini->env);
+		ft_cd(mini, mini->env, line);
 	else if (!ft_strncmp(str, "pwd", 4))
 		ft_pwd();
 	else if (!ft_strncmp(str, "export", 7))
@@ -102,7 +63,7 @@ void	ft_cmd(t_mini	*mini)
 	else if (!ft_strncmp(str, "env", 4))
 		ft_print_env(mini->env);
 	else
-		ft_execve_cmd(mini);
+		ft_execve_cmd(mini, line);
 }
 
 void	ft_change_sp_to_tab(char *s)
@@ -190,12 +151,13 @@ char	*ft_treat_line(char *line)
 	return (temp);
 }
 
-void	ft_treat_pipe_line_list(char ***pipe_line_list)
+void	ft_treat_pipe_line_list(char ***pipe_line_list, char **env)
 {
 	int	i;
 	int	j;
 
 	i = 0;
+	(void)env;
 	while (pipe_line_list[i])
 	{
 		j = 0;
@@ -269,13 +231,13 @@ int	ft_calc_list_size(t_mini *mini, int i)
 	int	l;
 
 	l = 1;
-	printf("s = %s\n", mini->line_list[i]);
+	// printf("s = %s\n", mini->line_list[i]);
 	while (mini->line_list[i] && ft_strncmp(mini->line_list[i], "|", 2))
 	{
 		l++;
 		i++;
 	}
-	printf("l = %d\n", l);
+	// printf("l = %d\n", l);
 	return (l);
 }
 
@@ -328,11 +290,11 @@ void	ft_parse_line(t_mini	*mini)
 	mini->line_list = ft_split(temp, '\t');
 	free(temp);
 	ft_get_pipe_line_list(mini);
-	ft_treat_pipe_line_list(mini->pipe_line_list);
+	ft_treat_pipe_line_list(mini->pipe_line_list, mini->env);
 	// int	i = 0;
 	// int j;
 	// while (mini->pipe_line_list[i])
-	// {
+	// {f
 	// 	j = 0;
 	// 	while (mini->pipe_line_list[i][j])
 	// 	{
@@ -351,22 +313,6 @@ void	ft_parse_line(t_mini	*mini)
 
 void	print_default(t_mini	*mini)
 {
-	// char	*temp;
-	// char	*half;
-	// char	*end;
-
-	// temp = NULL;
-	// temp = ft_strjoin("\e[0;93m", getenv("USER"));
-	// //make green user
-	// if (!temp)
-	// 	temp = ft_strjoin("\e[0;93m", getenv("user"));
-	// half = ft_strjoin("\e[0;92m", "@minishell$ ");
-	// end = ft_strjoin(half, "\e[0m");
-	// free(half);
-	// make minishell yellow and wont keep colouring
-	// mini->res = ft_strjoin(temp, end);
-	// free(temp);
-	// free(end);
 	mini->res = ft_strdup("minishell > ");
 	mini->line = readline(mini->res);
 	if (mini->line)
@@ -376,6 +322,8 @@ void	print_default(t_mini	*mini)
 int	main(int ac, char **av, char **env)
 {
 	t_mini	mini;
+	int		i;
+	int		j;
 
 	(void) ac;
 	(void) av;
@@ -386,9 +334,21 @@ int	main(int ac, char **av, char **env)
 		print_default(&mini);
 		if (mini.line)
 		{
+			i = 0;
 			ft_parse_line(&mini);
-			ft_cmd(&mini);
+			while (mini.pipe_line_list[i])
+			{
+				ft_cmd(&mini, mini.pipe_line_list[i]);
+				i++;
+			}
 		}
 	}
 }
 
+// Things left to do
+// signal
+// handle "\" in echo
+// handle "$" in cd
+// fd for multiple pipes
+// < and > cases
+// << and >> cases

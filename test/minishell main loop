@@ -1,0 +1,7 @@
+// while loop always on (end by command line, minishell keep on until exit is key)
+// init all variables/tokens
+// start readlinf function, get the imput line 								Done
+// after getting the line check for tokens in the line
+// etc " ' EOF these thing cause some changes and mind it down
+// next if there is a command in the line, execute the commamnd
+// free up everthing use and send for init agn

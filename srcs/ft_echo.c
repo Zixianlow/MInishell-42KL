@@ -6,56 +6,11 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 11:53:17 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/03/05 19:49:16 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/03/14 20:48:44 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	ft_check_n(char *s, int *i, int *n)
-{
-	int	j;
-	int	k;
-
-	j = 0;
-	while (1)
-	{
-		k = 0;
-		while (s[j] == ' ')
-			j++;
-		if (s[j] == '-')
-			j++;
-		if (s[j] != 'n')
-		{
-			if (s[j] != ' ' || s[j - 2] != ' ')
-				j--;
-			break ;
-		}
-		while (s[j + k] == 'n')
-			k++;
-		if (s[j + k] == '-')
-		{
-			j--;
-			break ;
-		}
-		else
-			j += k;
-		(*n)++;
-	}
-	(*i) += j;
-}
-
-int	ft_check_space(char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i] && line[i] == ' ')
-		i++;
-	if (line[i])
-		return (0);
-	return (1);
-}
 
 int	ft_check_quote(char *line, int q)
 {
@@ -67,6 +22,29 @@ int	ft_check_quote(char *line, int q)
 	if (line[i] == q)
 		return (0);
 	return (1);
+}
+
+void	ft_check_n(char **s, int *i, int *c)
+{
+	int	j;
+
+	j = 0;
+	while (s[*i] && s[*i][j])
+	{
+		while (s[*i][j] == ' ')
+			j++;
+		if (s[*i][j] == '-')
+			j++;
+		if (s[*i][j] != 'n')
+			return ;
+		while (s[*i][j] == 'n')
+			j++;
+		if (s[*i][j] == '-')
+			return ;
+		(*i)++;
+		(*c)++;
+		j = 0;
+	}
 }
 
 char	*ft_get_ent(char *s)
@@ -91,17 +69,18 @@ char	*ft_get_ent(char *s)
 	return (ent);
 }
 
-void	ft_print_ent(t_mini *mini, int *i)
+void	ft_print_ent(t_mini *mini, char *line, int *i)
 {
 	char	*s;
 	int		j;
 
-	s = ft_get_ent(mini->line + (*i));
+	while (line[(*i)] == '$')
+		(*i)++;
+	(*i)--;
+	s = ft_get_ent(line + (*i));
 	j = 0;
 	if (ft_strlen(s) == 0)
 	{
-		while (mini->line[(*i)] == '$')
-			(*i)++;
 		printf("$");
 		return ;
 	}
@@ -121,98 +100,32 @@ void	ft_print_ent(t_mini *mini, int *i)
 	(*i) += ft_strlen(s);
 }
 
-void	ft_echo(t_mini	*mini)
+void	ft_echo(t_mini *mini, char **list)
 {
-	int		i;
-	int		n;
-	char	*line;
+	int	i;
+	int	j;
+	int	c;
 
-	i = 5;
-	n = 0;
-	line = mini->line;
-	ft_check_n(line + i, &i, &n);
-	while (line[i])
+	i = 1;
+	c = 0;
+	ft_check_n(list, &i, &c);
+	while (list[i])
 	{
-		while (line[i] && line[i] == ' ')
-			i++;
-		if (line[i] == 39)
+		j = 0;
+
+		while (list[i][j])
 		{
-			if (ft_check_quote(line + i, 39))
-				printf("%c", line[i]);
-			i++;
-			while (line[i] && line[i] != 39)
-			{
-				if (ft_check_quote(line + i, 39) && line[i] == ' ')
-					break ;
-				if (line[i] != 39)
-					printf("%c", line[i]);
-				i++;
-			}
-			i++;
+			if (list[i][j] == '$')
+				ft_print_ent(mini, list[i], &j);
+			else if list[i][j] == '\\'
+			else
+				printf("%c", list[i][j]);
+			j++;
 		}
-		else if (line[i] == 34)
-		{
-			if (ft_check_quote(line + i, 34))
-				printf("%c", line[i]);
-			i++;
-			while (line[i] && line[i] != 34)
-			{
-				if (ft_check_quote(line + i, 34) && line[i] == ' ')
-					break ;
-				if (line[i] != 34)
-				{
-					if (line[i] == '$')
-						ft_print_ent(mini, &i);
-					else
-						printf("%c", line[i]);
-				}
-				i++;
-			}
-			i++;
-		}
-		else
-		{
-			while (line[i] && line[i] != ' ' && line[i] != 34 && line[i] != 39)
-			{
-				if (line[i] == '$')
-					ft_print_ent(mini, &i);
-				else
-					printf("%c", line[i]);
-				i++;
-			}
-		}
-		if (line[i] && line[i] == ' ')
+		if (list[i + 1])
 			printf(" ");
+		i++;
 	}
-	if (n == 0)
+	if (c == 0)
 		printf("\n");
 }
-
-// void	ft_echo(char **list)
-// {
-// 	int	i;
-// 	int	j;
-// 	int	c;
-
-// 	i = 1;
-// 	c = 0;
-// 	while (list[i])
-// 	{
-// 		j = 0;
-		// if (ft_check_n(list[i]) && c == 0)
-		// 	c++;
-// 		else
-// 		{
-// 			while (list[i][j])
-// 			{
-// 				write(1, &list[i][j], 1);
-// 				j++;
-// 			}
-// 			if (list[i + 1])
-// 				write(1, " ", 1);
-// 		}
-// 		i++;
-// 	}
-// 	if (c != 1)
-// 		write(1, "\n", 1);
-// }
