@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 13:56:11 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/03/14 19:14:48 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/03/15 19:12:53 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -347,8 +347,6 @@ int	main(int ac, char **av, char **env)
 
 // Things left to do
 // signal
-// handle "\" in echo
-// handle "$" in cd
 // fd for multiple pipes
 // < and > cases
 // << and >> cases

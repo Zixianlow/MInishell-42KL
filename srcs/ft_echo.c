@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 11:53:17 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/03/14 20:48:44 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/03/14 20:57:40 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ void	ft_echo(t_mini *mini, char **list)
 		{
 			if (list[i][j] == '$')
 				ft_print_ent(mini, list[i], &j);
-			else if list[i][j] == '\\'
 			else
 				printf("%c", list[i][j]);
 			j++;
