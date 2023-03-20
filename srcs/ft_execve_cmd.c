@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 20:51:15 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/03/13 15:39:09 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/03/20 19:36:25 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,18 +58,12 @@ char	*ft_px_get_env_path(char **env)
 void	ft_execve_cmd(t_mini	*mini, char **line)
 {
 	int		i;
-	pid_t	pid;
 
 	i = 0;
-	pid = fork();
-	if (pid == 0)
-	{
-		mini->env_path = ft_px_get_env_path(mini->env);
-		mini->path_list = ft_split(mini->env_path, ':');
-		mini->cmd_path = ft_get_command_path(mini->path_list, line[0]);
-		if (!mini->cmd_path)
-			return ;
-		execve(mini->cmd_path, line, mini->env);
-	}
-	wait(0);
+	mini->env_path = ft_px_get_env_path(mini->env);
+	mini->path_list = ft_split(mini->env_path, ':');
+	mini->cmd_path = ft_get_command_path(mini->path_list, line[0]);
+	if (!mini->cmd_path)
+		return ;
+	execve(mini->cmd_path, line, mini->env);
 }

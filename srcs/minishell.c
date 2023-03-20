@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 13:56:11 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/03/15 19:12:53 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/03/20 21:12:34 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,7 @@ char	*ft_line_dup(char *s)
 	c = 0;
 	while (s[i])
 	{
-		if (s[i] == '|')
+		if (s[i] == '|' || s[i] == '<' || s[i] == '>')
 			c += 2;
 		i++;
 	}
@@ -216,6 +216,36 @@ char	*ft_line_dup(char *s)
 		{
 			dest[j++] = ' ';
 			dest[j++] = '|';
+			dest[j++] = ' ';
+			i++;
+		}
+		else if (s[i] == '<' && s[i + 1] == '<')
+		{
+			dest[j++] = ' ';
+			dest[j++] = '<';
+			dest[j++] = '<';
+			dest[j++] = ' ';
+			i += 2;
+		}
+		else if (s[i] == '>' && s[i + 1] == '>')
+		{
+			dest[j++] = ' ';
+			dest[j++] = '>';
+			dest[j++] = '>';
+			dest[j++] = ' ';
+			i += 2;
+		}
+		else if (s[i] == '<')
+		{
+			dest[j++] = ' ';
+			dest[j++] = '<';
+			dest[j++] = ' ';
+			i++;
+		}
+		else if (s[i] == '>')
+		{
+			dest[j++] = ' ';
+			dest[j++] = '>';
 			dest[j++] = ' ';
 			i++;
 		}
@@ -294,7 +324,7 @@ void	ft_parse_line(t_mini	*mini)
 	// int	i = 0;
 	// int j;
 	// while (mini->pipe_line_list[i])
-	// {f
+	// {
 	// 	j = 0;
 	// 	while (mini->pipe_line_list[i][j])
 	// 	{
@@ -319,6 +349,96 @@ void	print_default(t_mini	*mini)
 		add_history(mini->line);
 }
 
+char	**ft_remove_in_out_from_list(char ***list, int l)
+{
+	int		i;
+	int		j;
+	char	**temp;
+
+	i = 0;
+	while ((*list)[i])
+		i++;
+	temp = malloc(sizeof(char *) * (i - l + 1));
+	i = 0;
+	j = 0;
+	while ((*list)[i])
+	{
+		if (!ft_strncmp((*list)[i], "<", 2))
+		{
+			free((*list)[i]);
+			i++;
+			if ((*list)[i] && ft_strncmp((*list)[i], ">", 2))
+			{
+				free((*list)[i]);
+				i++;
+			}
+		}
+		else if (!ft_strncmp((*list)[i], ">", 2))
+		{
+			free((*list)[i]);
+			i++;
+			if ((*list)[i] && ft_strncmp((*list)[i], "<", 2))
+			{
+				free((*list)[i]);
+				i++;
+			}
+		}
+		else
+		{
+			temp[j] = ft_strdup((*list)[i]);
+			free((*list)[i]);
+			i++;
+			j++;
+		}
+	}
+	temp[j] = NULL;
+	return (temp);
+}
+
+void	ft_handle_in_out_file(t_mini *mini, int n)
+{
+	int		i;
+	int		l;
+	int		fd;
+	char	***list;
+
+	i = 0;
+	l = 0;
+	list = &mini->pipe_line_list[n];
+	pipe(mini->fd);
+	while ((*list)[i])
+	{
+		if (!ft_strncmp((*list)[i], "<", 2))
+		{
+			l++;
+			if ((*list)[i + 1] && ft_strncmp((*list)[i + 1], ">", 2))
+			{
+				l++;
+				fd = open((*list)[i + 1], O_RDONLY);
+				if (fd == -1)
+					perror("Infile");
+				dup2(fd, 0);
+				close(fd);
+			}
+		}
+		else if (!ft_strncmp((*list)[i], ">", 2))
+		{
+			l++;
+			if ((*list)[i + 1] && ft_strncmp((*list)[i + 1], "<", 2))
+			{
+				l++;
+				fd = open((*list)[i + 1], O_TRUNC | O_CREAT | O_RDWR, 0644);
+				dup2(fd, 1);
+				close(fd);
+			}
+			else
+				perror("parse");
+		}
+		i++;
+	}
+	*list = ft_remove_in_out_from_list(list, l);
+}
+
 int	main(int ac, char **av, char **env)
 {
 	t_mini	mini;
@@ -336,17 +456,34 @@ int	main(int ac, char **av, char **env)
 		{
 			i = 0;
 			ft_parse_line(&mini);
-			while (mini.pipe_line_list[i])
+			mini.pid = fork();
+			if (mini.pid != 0)
 			{
-				ft_cmd(&mini, mini.pipe_line_list[i]);
-				i++;
+				ft_handle_in_out_file(&mini, i);
+				while (mini.pipe_line_list[i])
+				{
+					ft_cmd(&mini, mini.pipe_line_list[i]);
+					i++;
+				}
 			}
+			wait(0);
 		}
 	}
 }
 
 // Things left to do
 // signal
+// Ctrl + C = '\n' if ascii == '\n', print '\n'
 // fd for multiple pipes
 // < and > cases
 // << and >> cases
+// < open(av[1], O_RDONLY);
+// > open(av[4], O_TRUNC | O_CREAT | O_RDWR, 0644);
+// >> fd2 = open("u.c", O_RDWR, 0644);
+// 		if (fd2 < 0)
+// 			fd2 = open("u.c", O_CREAT | O_WRRD, 0644);
+//		gnl and dont print anything just read to the end
+// << end
+// 	while (!strncmp("end", end,4))
+// 		strdup
+// print (strdup result)

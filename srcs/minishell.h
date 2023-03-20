@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 13:50:59 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/03/13 17:45:21 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/03/20 19:38:34 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "../libft/libft.h"
+# include <fcntl.h>
 # include <stdlib.h>
 # include <dirent.h> 
 # include <stdio.h>
@@ -25,6 +26,8 @@
 typedef struct s_mini
 {
 	int		pipe_count;
+	int		fd[2];
+	pid_t	pid;
 	char	*res;
 	char	*line;
 	char	*cmd_path;
