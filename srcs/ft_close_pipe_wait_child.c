@@ -1,33 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   ft_close_pipe_wait_child.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/03 17:49:27 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/03/25 18:42:26 by lzi-xian         ###   ########.fr       */
+/*   Created: 2023/03/26 20:29:27 by lzi-xian          #+#    #+#             */
+/*   Updated: 2023/03/26 20:31:07 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+void	ft_close_pipe_wait_child(t_mini *mini, int i)
 {
-	size_t			i;
-	unsigned char	*a1;
-	unsigned char	*a2;
+	int	j;
 
-	a1 = (unsigned char *)s1;
-	a2 = (unsigned char *)s2;
-	i = 0;
-	while (i < n)
+	j = -1;
+	while (++j != mini->here_count)
 	{
-		if (a1[i] != a2[i])
-			return (a1[i] - a2[i]);
-		if (a1[i] == '\0' && a2[i] == '\0')
-			return (0);
-		i++;
+		close(mini->here_fd[j][0]);
+		close(mini->here_fd[j][1]);
 	}
-	return (0);
+	j = -1;
+	while (++j < i)
+	{
+		close(mini->fd[j][0]);
+		close(mini->fd[j][1]);
+	}
+	j = -1;
+	while (++j < i)
+		waitpid(-1, NULL, 0);
 }

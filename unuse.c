@@ -298,3 +298,111 @@
 // 	mini->file[i] = NULL;
 // }
 
+
+// void	ft_get_here_list(t_mini *mini, char *line)
+// {
+// 	int		i;
+// 	char	**temp;
+
+// 	i = 0;
+// 	while (mini->here_list[i])
+// 		i++;
+// 	temp = malloc(sizeof(char *) * (i + 2));
+// 	i = 0;
+// 	while (mini->here_list[i])
+// 	{
+// 		temp[i] = ft_strdup(mini->here_list[i]);
+// 		free(mini->here_list[i]);
+// 		i++;
+// 	}
+// 	temp[i++] = ft_strdup(line);
+// 	temp[i] = NULL;
+// 	free(mini->here_list);
+// 	mini->here_list = temp;
+// }
+
+// void	ft_handle_heredoc_file(t_mini *mini, int n)
+// {
+// 	int		i;
+// 	int		l;
+// 	int		fd;
+// 	char	***list;
+
+// 	i = 0;
+// 	l = 0;
+// 	list = &mini->pipe_line_list[n];
+// 	while ((*list)[i])
+// 	{
+// 		if (!ft_strncmp((*list)[i], "<<", 3))
+// 		{
+// 			l++;
+// 			if ((*list)[i + 1])
+// 			{
+// 				fd = open(".heredoc_tmp", O_TRUNC | O_CREAT | O_WRONLY, 0644);
+// 				while (1)
+// 				{
+// 					print_heredoc(mini, (*list)[i + 1]);
+// 					if (!ft_strncmp(mini->heredoc_line, (*list)[i + 1], (ft_strlen((*list)[i + 1]) + 1)))
+// 						break ;
+// 					write(fd, mini->heredoc_line, ft_strlen(mini->heredoc_line));
+// 					write(fd, "\n", 1);
+// 				}
+// 				dup2(fd, 0);
+// 				close(fd);
+// 			}
+// 			else
+// 				perror("parse");
+// 		}
+// 		i++;
+// 	}
+// 	*list = ft_remove_here_from_list(list, l);
+// }
+
+// void	print_heredoc(t_mini *mini, char *end)
+// {
+// 	mini->heredoc = ft_strdup("heredoc > ");
+// 	mini->heredoc_line = readline(mini->heredoc);
+// 	if (mini->heredoc_line)
+// 		add_history(mini->heredoc_line);
+// }
+
+// void	ft_remove_nl(char *s)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (s[i])
+// 	{
+// 		if (s[i] == '\n')
+// 			s[i] = '\0';
+// 		i++;
+// 	}
+// }
+
+// if (!ft_strncmp((*list)[i], "<<", 3))
+// 		{
+// 			l++;
+// 			if ((*list)[i + 1])
+// 			{
+				// fd = open(".heredoc_tmp", O_TRUNC | O_CREAT | O_WRONLY, 0644);
+				// pipe(mini->here_fd);
+				// while (1)
+				// {
+				// 	write(1, "heredoc > ", 10);
+				// 	mini->heredoc_line = get_next_line(0);
+				// 	ft_remove_nl(mini->heredoc_line);
+				// 	if (!ft_strncmp(mini->heredoc_line, (*list)[i + 1], (ft_strlen((*list)[i + 1])) + 1))
+				// 		break ;
+				// 	write(mini->here_fd[1], mini->heredoc_line, ft_strlen(mini->heredoc_line));
+				// 	write(mini->here_fd[1], "\n", 1);
+				// 	free(mini->heredoc_line);
+				// }
+				// free(mini->heredoc_line);
+				// close(fd);
+				// fd = open(".heredoc_tmp", O_RDONLY);
+				// close(fd);
+				// dup2(mini->here_fd[mini->here_id][0], 0);
+				// close(mini->here_fd[mini->here_id][0]);
+				// close(mini->here_fd[mini->here_id][1]);
+				// mini->here_id++;
+			// }

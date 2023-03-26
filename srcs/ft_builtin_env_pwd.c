@@ -1,33 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   ft_builtin_env_pwd.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/03 17:49:27 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/03/25 18:42:26 by lzi-xian         ###   ########.fr       */
+/*   Created: 2023/03/26 20:55:03 by lzi-xian          #+#    #+#             */
+/*   Updated: 2023/03/26 20:55:06 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+void	ft_print_env(char **env)
 {
-	size_t			i;
-	unsigned char	*a1;
-	unsigned char	*a2;
+	int	i;
+	int	j;
 
-	a1 = (unsigned char *)s1;
-	a2 = (unsigned char *)s2;
 	i = 0;
-	while (i < n)
+	while (env[i])
 	{
-		if (a1[i] != a2[i])
-			return (a1[i] - a2[i]);
-		if (a1[i] == '\0' && a2[i] == '\0')
-			return (0);
+		j = 0;
+		while (env[i][j])
+		{
+			write(1, &env[i][j], 1);
+			j++;
+		}
+		write(1, "\n", 1);
 		i++;
 	}
-	return (0);
+}
+
+void	ft_pwd(void)
+{
+	char	cwd[PATH_MAX];
+
+	if (getcwd(cwd, sizeof(cwd)) != NULL)
+		printf("%s\n", cwd);
+	else
+		perror("getcwd() error");
 }

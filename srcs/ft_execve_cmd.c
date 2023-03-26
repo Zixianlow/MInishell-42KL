@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 20:51:15 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/03/20 19:36:25 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/03/22 16:11:50 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	*ft_px_get_env_path(char **env)
 	return (NULL);
 }
 
-void	ft_execve_cmd(t_mini	*mini, char **line)
+int	ft_execve_cmd(t_mini	*mini, char **line)
 {
 	int		i;
 
@@ -64,6 +64,7 @@ void	ft_execve_cmd(t_mini	*mini, char **line)
 	mini->path_list = ft_split(mini->env_path, ':');
 	mini->cmd_path = ft_get_command_path(mini->path_list, line[0]);
 	if (!mini->cmd_path)
-		return ;
+		return (1);
 	execve(mini->cmd_path, line, mini->env);
+	return (1);
 }
