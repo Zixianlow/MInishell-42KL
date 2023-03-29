@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cd.c                                            :+:      :+:    :+:   */
+/*   ft_builtin_cd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 14:58:58 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/03/15 15:17:23 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/03/29 20:15:58 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,15 +162,27 @@ void	ft_cd_next(t_mini *mini, char **env, char **line)
 		return ;
 	}
 	i = 0;
-	while (env[i])
-		if (!ft_strncmp(env[i++], "PWD=", 4))
+	while (mini->env[i])
+	{
+		if (!ft_strncmp(mini->env[i], "PWD=", 4))
+		{
+			free (mini->env[i]);
+			mini->env[i] = ft_strjoin("PWD=", new);
 			break ;
-	env[--i] = ft_strjoin("PWD=", new);
+		}
+		i++;
+	}
 	i = 0;
-	while (env[i])
-		if (!ft_strncmp(env[i++], "OLDPWD=", 7))
+	while (mini->env[i])
+	{
+		if (!ft_strncmp(mini->env[i], "OLDPWD=", 7))
+		{
+			free (mini->env[i]);
+			mini->env[i] = ft_strjoin("OLDPWD=", old);
 			break ;
-	env[--i] = ft_strjoin("OLDPWD=", old);
+		}
+		i++;
+	}
 	free(new);
 	free(old);
 }
