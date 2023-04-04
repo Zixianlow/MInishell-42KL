@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 13:56:11 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/03/29 20:57:57 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/03/30 17:11:19 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -352,7 +352,10 @@ void	ft_handle_in_out_file(t_mini *mini, int n)
 				l++;
 				fd = open((*list)[i + 1], O_RDONLY);
 				if (fd == -1)
+				{
 					perror("Infile");
+					exit(0);
+				}
 				dup2(fd, 0);
 				close(fd);
 			}
@@ -418,12 +421,72 @@ char	**ft_strdup_multi(char **env)
 	return (temp);
 }
 
+int	ft_check_parent_cmd(t_mini *mini)
+{
+	int		i;
+	char	**list;
+
+	i = 0;
+	list = mini->pipe_line_list[mini->pipe_count - 1];
+	while (list[i])
+	{
+		if (!ft_strncmp(list[i], "exit", 5))
+			return (1);
+		else if (!ft_strncmp(list[i], "cd", 3))
+			return (1);
+		else if (!ft_strncmp(list[i], "export", 7))
+			return (1);
+		else if (!ft_strncmp(list[i], "unset", 6))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+void	ft_parent_cmd(t_mini	*mini, char **line)
+{
+	char	*str;
+
+	str = line[0];
+	if (!str)
+		exit(0);
+	else if (!ft_strncmp(str, "exit", 5))
+		exit(0);
+	else if (!ft_strncmp(str, "cd", 3))
+		ft_cd(mini, mini->env, line);
+	else if (!ft_strncmp(str, "export", 7))
+		printf("cmd = export\n");
+	else if (!ft_strncmp(str, "unset", 6))
+		printf("cmd = unset\n");
+}
+
+void	ft_child_cmd(t_mini *mini, int i)
+{
+	while (mini->pipe_line_list[i])
+	{
+		mini->pid2 = fork();
+		if (mini->pid2 == 0)
+		{
+			if (i > 0)
+			{
+				close(mini->fd[i - 1][1]);
+				dup2(mini->fd[i - 1][0], 0);
+			}
+			if (mini->pipe_line_list[i + 1])
+				dup2(mini->fd[i][1], 1);
+			else
+				dup2(1, 1);
+			ft_handle_in_out_file(mini, i);
+			ft_cmd(mini, mini->pipe_line_list[i]);
+		}
+		i++;
+	}
+}
+
 int	main(int ac, char **av, char **env)
 {
 	t_mini	mini;
 	int		i;
-	int		j;
-	int		p;
 
 	(void) ac;
 	(void) av;
@@ -440,26 +503,12 @@ int	main(int ac, char **av, char **env)
 			ft_parse_line(&mini);
 			ft_create_pipes_fd(&mini);
 			ft_get_here_pipe(&mini);
-			// the cd, export, unset, exit meet requirement skip the while loop
-			while (mini.pipe_line_list[i])
-			{
-				mini.pid2 = fork();
-				if (mini.pid2 == 0)
-				{
-					if (i > 0)
-					{
-						close(mini.fd[i - 1][1]);
-						dup2(mini.fd[i - 1][0], 0);
-					}
-					if (mini.pipe_line_list[i + 1])
-						dup2(mini.fd[i][1], 1);
-					else
-						dup2(1, 1);
-					ft_handle_in_out_file(&mini, i);
-					ft_cmd(&mini, mini.pipe_line_list[i]);
-				}
-				i++;
-			}
+			if (mini.pipe_count == 0 && ft_check_parent_cmd(&mini))
+				ft_parent_cmd(&mini, mini.pipe_line_list[0]);
+			else if (mini.pipe_count > 0 && ft_check_parent_cmd(&mini))
+				ft_parent_cmd(&mini, mini.pipe_line_list[mini.pipe_count - 1]);
+			else
+				ft_child_cmd(&mini, i);
 			ft_close_pipe_wait_child(&mini, i);
 		}
 	}

@@ -6,7 +6,7 @@
 #    By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/04 11:27:38 by lzi-xian          #+#    #+#              #
-#    Updated: 2023/03/29 14:02:25 by lzi-xian         ###   ########.fr        #
+#    Updated: 2023/03/30 15:40:28 by lzi-xian         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,8 @@ ARCR		= 	ar cr
 RMRF		=	rm -rf
 CFLAGS		=	-Wall -Wextra -Werror
 GCC			=	gcc
+RLLIB		=	-L /usr/local/opt/readline/lib
+RLINC       =   -I /usr/local/opt/readline/include
 
 
 all:
@@ -36,10 +38,10 @@ all:
 	@make $(NAME)
 
 $(OBJS_DIR)%.o:	$(SRC_DIR)%.c
-	@$(GCC) -c $< -o $@
+	@$(GCC) ${RLINC} -c $< -o $@
 
 $(NAME):	${OBJS}
-	${GCC} ${CFLAGS} ${OBJS} libft/libft.a -lcurses -lreadline -o $(NAME) -fsanitize=address -g3
+	${GCC} ${CFLAGS} ${OBJS} ${RLLIB} ${RLINC} libft/libft.a -lcurses -lreadline -o $(NAME) -fsanitize=address -g3
 	
 clean:
 	${RMRF} ${OBJS} ${OBJS_DIR}

@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 20:51:15 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/03/29 20:46:24 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/03/30 17:12:12 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,10 @@ int	ft_execve_cmd(t_mini	*mini, char **line)
 	mini->path_list = ft_split(mini->env_path, ':');
 	mini->cmd_path = ft_get_command_path(mini->path_list, line[0]);
 	if (!mini->cmd_path)
+	{
+		perror("cmd");
 		exit (127);
+	}
 	execve(mini->cmd_path, line, mini->env);
 	return (1);
 }
