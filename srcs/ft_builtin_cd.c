@@ -3,109 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_builtin_cd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
+/*   By: cping-xu <cping-xu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 14:58:58 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/03/29 20:15:58 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/04/04 17:54:16 by cping-xu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	ft_strlen_to_slash(char	*line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i] && line[i] != '/')
-		i++;
-	return (i);
-}
-
-void	ft_dup_rest_of_line(char *line, int i, char **temp, int *len)
-{
-	while (line[i] && line[i] != '/')
-		i++;
-	while (line[i])
-		(*temp)[(*len)++] = line[i++];
-}
-
-int	ft_cd_check_env(char **env, char *line, int i, char **temp)
-{
-	int	j;
-	int	len;
-	int	l;
-
-	l = ft_strlen_to_slash(line + i);
-	j = -1;
-	while (env[++j])
-	{
-		if (!(ft_strncmp(line + i, env[j], l)) && env[j][l] == '=')
-		{
-			*temp = malloc(ft_strlen(line) + ft_strlen(env[j] + l) + 1);
-			l++;
-			i = 0;
-			len = 0;
-			while (line[i] != '$')
-				(*temp)[len++] = line[i++];
-			while (env[j][l])
-				(*temp)[len++] = env[j][l++];
-			ft_dup_rest_of_line(line, i, temp, &len);
-			(*temp)[len] = '\0';
-			return (1);
-		}
-	}
-	return (0);
-}
-
-int	ft_cd_wrong_env(char **env, char *line, int i, char **temp)
-{
-	int	j;
-	int	len;
-	int	l;
-
-	l = 4;
-	j = -1;
-	while (env[++j])
-	{
-		if (!(ft_strncmp("HOME", env[j], l)) && env[j][l] == '=')
-		{
-			*temp = malloc(ft_strlen(line) + ft_strlen(env[j] + l) + 1);
-			l++;
-			i = 0;
-			len = 0;
-			while (line[i] != '$')
-				(*temp)[len++] = line[i++];
-			while (env[j][l])
-				(*temp)[len++] = env[j][l++];
-			ft_dup_rest_of_line(line, i, temp, &len);
-			(*temp)[len] = '\0';
-			return (1);
-		}
-	}
-	return (0);
-}
-
-char	*ft_env_to_line(char *line, char **env, int i)
-{
-	int		l;
-	char	*temp;
-
-	l = ft_strlen_to_slash(line + i);
-	if ((line + i)[0] == '$' || l < 1)
-		return (line);
-	if (ft_cd_check_env(env, line, i, &temp))
-	{
-		free(line);
-		return (temp);
-	}
-	if (ft_cd_wrong_env(env, line, i, &temp))
-	{
-		free(line);
-		return (temp);
-	}
-	return (line);
-}
 
 char	*ft_user_input_cwd(char *cwd, char **line, char **env)
 {
@@ -136,6 +41,54 @@ char	*ft_user_input_cwd(char *cwd, char **line, char **env)
 	return (hold);
 }
 
+char	**move_pwd(t_mini *mini, char *str, char *str2)
+{
+	int		i;
+	char	**temp;
+
+	i = 0;
+	while (mini->env[i])
+		i++;
+	temp = malloc(sizeof(char *) * i + 2);
+	i = 0;
+	while (mini->env[i + 1])
+	{
+		temp[i] = ft_strdup(mini->env[i]);
+		i++;
+	}
+	temp[i++] = ft_strjoin(str, str2);
+	temp[i] = NULL;
+	return (temp);
+}
+
+void	ft_setpwd(t_mini *mini, char *new, char *old, int i)
+{
+	i = -1;
+	while (mini->env[++i])
+	{
+		if (!ft_strncmp(mini->env[i], "PWD=", 4))
+		{
+			free (mini->env[i]);
+			mini->env[i] = ft_strjoin("PWD=", new);
+			break ;
+		}
+	}
+	if (!mini->env[i])
+		mini->env = move_pwd(mini, "PWD=", new);
+	i = -1;
+	while (mini->env[++i])
+	{
+		if (!ft_strncmp(mini->env[i], "OLDPWD=", 7))
+		{
+			free (mini->env[i]);
+			mini->env[i] = ft_strjoin("OLDPWD=", old);
+			break ;
+		}
+	}
+	if (!mini->env[i])
+		mini->env = move_pwd(mini, "OLDPWD=", old);
+}
+
 void	ft_cd_next(t_mini *mini, char **env, char **line)
 {
 	char	cwd[PATH_MAX];
@@ -161,30 +114,8 @@ void	ft_cd_next(t_mini *mini, char **env, char **line)
 			perror("cd");
 		return ;
 	}
-	i = 0;
-	while (mini->env[i])
-	{
-		if (!ft_strncmp(mini->env[i], "PWD=", 4))
-		{
-			free (mini->env[i]);
-			mini->env[i] = ft_strjoin("PWD=", new);
-			break ;
-		}
-		i++;
-	}
-	i = 0;
-	while (mini->env[i])
-	{
-		if (!ft_strncmp(mini->env[i], "OLDPWD=", 7))
-		{
-			free (mini->env[i]);
-			mini->env[i] = ft_strjoin("OLDPWD=", old);
-			break ;
-		}
-		i++;
-	}
-	free(new);
-	free(old);
+	ft_setpwd(mini, new, old, i);
+	free_cd(&new, &old);
 }
 
 void	ft_cd(t_mini *mini, char **env, char **line)
