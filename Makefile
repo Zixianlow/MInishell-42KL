@@ -6,7 +6,7 @@
 #    By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/04 11:27:38 by lzi-xian          #+#    #+#              #
-#    Updated: 2023/04/05 15:18:57 by lzi-xian         ###   ########.fr        #
+#    Updated: 2023/04/10 19:29:31 by lzi-xian         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,7 @@ $(OBJS_DIR)%.o:	$(SRC_DIR)%.c
 	@$(GCC) ${RLINC} -c $< -o $@
 
 $(NAME):	${OBJS}
-	${GCC} ${CFLAGS} ${OBJS} ${RLLIB} ${RLINC} libft/libft.a -lcurses -lreadline -o $(NAME) -fsanitize=address -g3
+	${GCC} ${CFLAGS} ${OBJS} ${RLLIB} ${RLINC} libft/libft.a -lcurses -lreadline -o $(NAME)
 	
 clean:
 	${RMRF} ${OBJS} ${OBJS_DIR}

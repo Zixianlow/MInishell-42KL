@@ -6,15 +6,36 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 13:56:11 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/04/05 16:44:42 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/04/10 19:27:52 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	ft_free_pipe_list(t_mini *mini)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (mini->pipe_line[i])
+	{
+		j = 0;
+		while (mini->pipe_line[i][j])
+		{
+			free(mini->pipe_line[i][j]);
+			j++;
+		}
+		free(mini->pipe_line[i]);
+		i++;
+	}
+	free(mini->pipe_line);
+}
+
 void	ft_parse_line(t_mini	*mini)
 {
 	char	*temp;
+	// int 	z;
 
 	temp = ft_line_dup(mini->line);
 	ft_change_sp_to_tab(temp);
@@ -22,6 +43,13 @@ void	ft_parse_line(t_mini	*mini)
 	free(temp);
 	ft_get_pipe_line(mini);
 	ft_treat_pipe_line(mini->pipe_line, mini->env);
+	// z = 0;
+	// while (mini->line_list && mini->line_list[z])
+	// {
+	// 	free (mini->line_list[z]);
+	// 	z++;
+	// }
+	// free (mini->line_list);
 }
 
 char	**ft_strdup_multi(char **env)
@@ -58,6 +86,7 @@ void	runline(t_mini *mini)
 	else
 		ft_child_cmd(mini, &i);
 	ft_close_pipe_wait_child(mini, i);
+	ft_free_pipe_list(mini);
 }
 
 int	main(int ac, char **av, char **env)
@@ -78,3 +107,5 @@ int	main(int ac, char **av, char **env)
 			runline(&mini);
 	}
 }
+
+// mini res before parse
