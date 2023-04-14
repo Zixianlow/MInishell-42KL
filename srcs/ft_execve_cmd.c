@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 20:51:15 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/04/10 19:28:06 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/04/14 16:51:53 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*ft_px_get_env_path(char **env)
 	return (NULL);
 }
 
-int	ft_execve_cmd(t_mini	*mini, char **line)
+void	ft_execve_cmd(t_mini	*mini, char **line)
 {
 	int		i;
 
@@ -57,12 +57,6 @@ int	ft_execve_cmd(t_mini	*mini, char **line)
 	mini->env_path = ft_px_get_env_path(mini->env);
 	mini->path_list = ft_split(mini->env_path, ':');
 	mini->cmd_path = ft_get_command_path(mini->path_list, line[0]);
-	if (!mini->cmd_path)
-	{
-		perror("cmd");
-		// system ("leaks minishell");
-		exit (127);
-	}
 	execve(mini->cmd_path, line, mini->env);
-	return (1);
+	exit (127);
 }

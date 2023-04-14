@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 20:55:03 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/03/29 19:42:39 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/04/14 18:04:04 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,15 @@ void	ft_print_env(char **env)
 	}
 }
 
-void	ft_pwd(void)
+void	ft_pwd(char **line)
 {
 	char	cwd[PATH_MAX];
 
-	if (getcwd(cwd, sizeof(cwd)) != NULL)
+	if (!line[1] && getcwd(cwd, sizeof(cwd)) != NULL)
 		printf("%s\n", cwd);
 	else
-		perror("getcwd() error");
+	{
+		perror("pwd : too many arguments");
+		exit (1);
+	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_builtin_cd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cping-xu <cping-xu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 14:58:58 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/04/04 17:54:16 by cping-xu         ###   ########.fr       */
+/*   Updated: 2023/04/14 17:57:41 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	ft_cd_next(t_mini *mini, char **env, char **line)
 	{
 		free(new);
 		if (line[1])
-			perror("cd");
+			ft_parent_cmd_error(mini, "cd");
 		return ;
 	}
 	ft_setpwd(mini, new, old, i);
@@ -123,5 +123,5 @@ void	ft_cd(t_mini *mini, char **env, char **line)
 	if (!line[2])
 		ft_cd_next(mini, env, line);
 	else
-		perror("cd");
+		ft_parent_cmd_error(mini, "cd");
 }

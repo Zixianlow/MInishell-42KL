@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_utils_pipe.c                                    :+:      :+:    :+:   */
+/*   ft_parent_child_cmd.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 18:28:04 by cping-xu          #+#    #+#             */
-/*   Updated: 2023/04/10 17:23:47 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/04/14 18:18:33 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,9 @@ void	ft_child_cmd(t_mini *mini, int *i)
 			if ((*i) > 0 && !ft_chk_in(mini, *i))
 			{
 				close(mini->fd[(*i) - 1][1]);
-				dup2(mini->fd[(*i) - 1][0], 0);
+				// close(mini->temp_in);
+				// mini->temp_in = mini->fd[(*i) - 1][0];
+				dup2(mini->fd[(*i) - 1][0], mini->temp_in);
 			}
 			if (mini->pipe_line[(*i) + 1] && !ft_chk_out(mini, *i))
 				dup2(mini->fd[(*i)][1], 1);

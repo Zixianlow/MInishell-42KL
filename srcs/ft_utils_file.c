@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 18:26:49 by cping-xu          #+#    #+#             */
-/*   Updated: 2023/04/05 15:47:05 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/04/14 17:58:34 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	ft_handle_in(char ***list, int *i, int *l)
 			if (fd == -1)
 			{
 				perror("Infile");
-				exit(0);
+				exit(1);
 			}
 			dup2(fd, 0);
 			close(fd);
@@ -68,7 +68,7 @@ void	ft_handle_in_double(char ***list, int *i, int *l, t_mini *mini)
 		else
 		{
 			perror("parse");
-			exit(0);
+			exit(1);
 		}
 	}
 }
@@ -87,7 +87,7 @@ void	ft_handle_out_double(char ***list, int *i, int *l)
 			if (fd == -1)
 			{
 				perror("Outfile");
-				exit(0);
+				exit(1);
 			}
 			dup2(fd, 1);
 			close(fd);
