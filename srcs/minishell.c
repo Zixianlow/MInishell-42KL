@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 13:56:11 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/04/14 18:16:21 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/04/18 15:27:26 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,5 @@ int	main(int ac, char **av, char **env)
 		print_default(&mini);
 		if (mini.line)
 			runline(&mini);
-		close(mini.temp_in);
-		close(mini.temp_out);
 	}
 }

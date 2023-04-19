@@ -6,13 +6,13 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 18:26:49 by cping-xu          #+#    #+#             */
-/*   Updated: 2023/04/14 17:58:34 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/04/18 15:33:44 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_handle_in(char ***list, int *i, int *l)
+void	ft_handle_in(char ***list, int *i, int *l, t_mini *mini)
 {
 	int	fd;
 
@@ -28,13 +28,13 @@ void	ft_handle_in(char ***list, int *i, int *l)
 				perror("Infile");
 				exit(1);
 			}
-			dup2(fd, 0);
-			close(fd);
+			close(mini->temp_in);
+			mini->temp_in = fd;
 		}
 	}
 }
 
-void	ft_handle_out(char ***list, int *i, int *l)
+void	ft_handle_out(char ***list, int *i, int *l, t_mini *mini)
 {
 	int	fd;
 
@@ -45,8 +45,8 @@ void	ft_handle_out(char ***list, int *i, int *l)
 		{
 			(*l)++;
 			fd = open((*list)[(*i) + 1], O_TRUNC | O_CREAT | O_RDWR, 0644);
-			dup2(fd, 1);
-			close(fd);
+			close(mini->temp_out);
+			mini->temp_out = fd;
 		}
 	}
 }
@@ -60,9 +60,9 @@ void	ft_handle_in_double(char ***list, int *i, int *l, t_mini *mini)
 		(*l)++;
 		if ((*list)[(*i) + 1])
 		{
-			dup2(mini->here_fd[mini->here_id][0], 0);
-			close(mini->here_fd[mini->here_id][0]);
+			close(mini->temp_in);
 			close(mini->here_fd[mini->here_id][1]);
+			mini->temp_in = mini->here_fd[mini->here_id][0];
 			mini->here_id++;
 		}
 		else
@@ -73,7 +73,7 @@ void	ft_handle_in_double(char ***list, int *i, int *l, t_mini *mini)
 	}
 }
 
-void	ft_handle_out_double(char ***list, int *i, int *l)
+void	ft_handle_out_double(char ***list, int *i, int *l, t_mini *mini)
 {
 	int	fd;
 
@@ -89,8 +89,8 @@ void	ft_handle_out_double(char ***list, int *i, int *l)
 				perror("Outfile");
 				exit(1);
 			}
-			dup2(fd, 1);
-			close(fd);
+			close(mini->temp_out);
+			mini->temp_out = fd;
 		}
 	}
 }
@@ -106,10 +106,10 @@ void	ft_handle_in_out_file(t_mini *mini, int n)
 	list = &mini->pipe_line[n];
 	while ((*list)[i])
 	{
-		ft_handle_in(list, &i, &l);
-		ft_handle_out(list, &i, &l);
+		ft_handle_in(list, &i, &l, mini);
+		ft_handle_out(list, &i, &l, mini);
 		ft_handle_in_double(list, &i, &l, mini);
-		ft_handle_out_double(list, &i, &l);
+		ft_handle_out_double(list, &i, &l, mini);
 		i++;
 	}
 	*list = ft_remove_in_out_from_list(list, l);

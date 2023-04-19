@@ -6,14 +6,11 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 15:14:12 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/04/05 15:37:05 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/04/18 15:40:16 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// void	ft_remove_in_out();
-// void	ft_remove_in_out_double();
 
 void	ft_compared_free_list(char ***list, int *i, int *c)
 {

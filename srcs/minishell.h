@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 13:50:59 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/04/14 18:15:13 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/04/17 15:58:26 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@ typedef struct s_mini
 	int				pipe_count;
 	int				**fd;
 	int				**here_fd;
-	int				here_id;
 	int				here_count;
+	int				here_yes;
+	int				here_id;
 	int				temp_in;
 	int				temp_out;
 	int				err;
