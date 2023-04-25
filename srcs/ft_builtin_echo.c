@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_builtin_echo.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cping-xu <cping-xu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 11:53:17 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/04/04 17:41:58 by cping-xu         ###   ########.fr       */
+/*   Updated: 2023/04/24 20:38:59 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,16 +108,53 @@ void	ft_echo(t_mini *mini, char **list)
 		j = 0;
 		while (list[i][j])
 		{
-			if (list[i][j] == '$')
-				ft_print_ent(mini, list[i], &j);
+			if (list[i][j] == 39)
+			{
+				if (ft_check_quote(list[i] + j, 39))
+					printf("%c", list[i][j]);
+				j++;
+				while (list[i][j] && list[i][j] != 39)
+				{
+					if (ft_check_quote(list[i] + i, 39))
+						break ;
+					printf("%c", list[i][j]);
+					j++;
+				}
+				j++;
+			}
+			else if (list[i][j] == 34)
+			{
+				if (ft_check_quote(list[i] + i, 34))
+					printf("%c", list[i][j]);
+				j++;
+				while (list[i][j] && list[i][j] != 34)
+				{
+					if (ft_check_quote(list[i] + i, 34))
+						break ;
+					if (list[i][j] == '$')
+						ft_print_ent(mini, list[i], &j);
+					else
+						printf("%c", list[i][j]);
+					j++;
+				}
+				j++;
+			}
 			else
-				printf("%c", list[i][j]);
-			j++;
+			{
+				while (list[i][j] && list[i][j] != 34 && list[i][j] != 39)
+				{
+					if (list[i][j] == '$')
+						ft_print_ent(mini, list[i], &j);
+					else
+						printf("%c", list[i][j]);
+					j++;
+				}
+			}
 		}
-		if (list[i + 1])
-			printf(" ");
 		i++;
 	}
 	if (c == 0)
 		printf("\n");
 }
+
+		

@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 17:41:42 by cping-xu          #+#    #+#             */
-/*   Updated: 2023/04/10 14:40:11 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/04/20 16:55:45 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ft_set_sp_to_tab(int *i, char *s, char ch)
 		(*i)++;
 	}
 	if (s[(*i)] == ' ')
-		s[(*i)] = '\t';
+		s[(*i)] = 1;
 }
 
 void	ft_change_sp_to_tab(char *s)
@@ -55,7 +55,7 @@ void	ft_change_sp_to_tab(char *s)
 		else if (s[i] == 34)
 			ft_set_sp_to_tab(&i, s, 34);
 		else if (s[i] == ' ')
-			s[i] = '\t';
+			s[i] = 1;
 		i++;
 	}
 }

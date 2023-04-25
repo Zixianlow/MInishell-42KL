@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 13:56:11 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/04/18 15:27:26 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/04/25 13:56:04 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	ft_parse_line(t_mini	*mini)
 
 	temp = ft_line_dup(mini->line);
 	ft_change_sp_to_tab(temp);
-	mini->line_list = ft_split(temp, '\t');
+	mini->line_list = ft_split(temp, 1);
 	free(temp);
 	ft_get_pipe_line(mini);
 	ft_treat_pipe_line(mini->pipe_line, mini->env, mini);
@@ -108,5 +108,7 @@ int	main(int ac, char **av, char **env)
 		print_default(&mini);
 		if (mini.line)
 			runline(&mini);
+		close(mini.temp_in);
+		close(mini.temp_out);
 	}
 }

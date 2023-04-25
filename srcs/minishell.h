@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 13:50:59 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/04/17 15:58:26 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/04/25 13:54:45 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,11 @@ typedef struct s_mini
 	char			**file;
 	char			**line_list;
 	char			***pipe_line;
+	char			***echo_line;
 }	t_mini;
 
 int		ft_check_quote(char *line, int q);
-void	ft_cmd(t_mini	*mini, char **line);
+void	ft_cmd(t_mini	*mini, char **line, char **echo);
 void	ft_print_env(char **env);
 void	ft_pwd(char **line);
 void	ft_echo(t_mini *mini, char **list);

@@ -6,12 +6,11 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 15:38:21 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/04/18 15:38:36 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/04/25 13:54:24 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 int	ft_chk_in(t_mini *mini, int i)
 {
@@ -87,7 +86,7 @@ void	ft_child_cmd(t_mini *mini, int *i)
 			dup2(mini->temp_out, 1);
 			close(mini->temp_in);
 			close(mini->temp_out);
-			ft_cmd(mini, mini->pipe_line[(*i)]);
+			ft_cmd(mini, mini->pipe_line[(*i)], mini->echo_line[(*i)]);
 		}
 		(*i)++;
 	}
