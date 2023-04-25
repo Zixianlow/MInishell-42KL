@@ -6,7 +6,7 @@
 #    By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/04 11:27:38 by lzi-xian          #+#    #+#              #
-#    Updated: 2023/04/18 15:39:04 by lzi-xian         ###   ########.fr        #
+#    Updated: 2023/04/25 14:00:42 by lzi-xian         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,10 +19,11 @@ MAN_FILES	=	minishell					\
 				ft_utils3					\
 				ft_utils_cd					\
 				ft_utils_export				\
-				ft_child_cmd			\
-				ft_parent_cmd			\
+				ft_child_cmd				\
+				ft_parent_cmd				\
 				ft_utils_file				\
 				ft_utils_line				\
+				ft_utils_echo				\
 				ft_utils_pipeline			\
 				ft_sigaction				\
 				ft_cmd_with_builtin			\

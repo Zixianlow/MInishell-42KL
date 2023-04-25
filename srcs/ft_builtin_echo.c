@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 11:53:17 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/04/24 20:38:59 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/04/25 14:10:54 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,63 +35,49 @@ void	ft_check_n(char **s, int *i, int *c)
 	}
 }
 
-char	*ft_get_ent(char *s)
+void	ft_echo_single_quote(char *s, int *j)
 {
-	int		i;
-	int		l;
-	char	*ent;
-
-	i = 1;
-	l = 1;
-	while (s[l] && (ft_isalnum(s[l]) || s[l] == '_'))
-		l++;
-	ent = malloc(sizeof(char) * l);
-	l = 0;
-	while (s[i] && (ft_isalnum(s[i]) || s[i] == '_'))
+	if (ft_check_quote(s + (*j), 39))
+		printf("%c", s[*j]);
+	(*j)++;
+	while (s[*j] && s[*j] != 39)
 	{
-		ent[l] = s[i];
-		l++;
-		i++;
+		if (ft_check_quote(s + (*j), 39))
+			break ;
+		printf("%c", s[*j]);
+		(*j)++;
 	}
-	ent[l] = '\0';
-	return (ent);
+	(*j)++;
 }
 
-int	ft_no_length(char *s)
+void	ft_echo_double_quote(t_mini *mini, char *s, int *j)
 {
-	if (ft_strlen(s) == 0)
+	if (ft_check_quote(s + (*j), 34))
+		printf("%c", s[*j]);
+	(*j)++;
+	while (s[*j] && s[*j] != 34)
 	{
-		printf("$");
-		return (1);
+		if (ft_check_quote(s + (*j), 34))
+			break ;
+		if (s[*j] == '$')
+			ft_print_ent(mini, s, j);
+		else
+			printf("%c", s[*j]);
+		(*j)++;
 	}
-	return (0);
+	(*j)++;
 }
 
-void	ft_print_ent(t_mini *mini, char *line, int *i)
+void	ft_echo_normal(t_mini *mini, char *s, int *j)
 {
-	char	*s;
-	int		j;
-
-	while (line[(*i)] == '$')
-		(*i)++;
-	(*i)--;
-	s = ft_get_ent(line + (*i));
-	j = -1;
-	if (ft_no_length(s))
-		return ;
-	while (mini->env[++j])
+	while (s[*j] && s[*j] != 34 && s[*j] != 39)
 	{
-		if (!(ft_strncmp(s, mini->env[j], ft_strlen(s))))
-		{
-			if (mini->env[j][ft_strlen(s)] == '=')
-			{
-				printf("%s", mini->env[j] + ft_strlen(s) + 1);
-				(*i) += ft_strlen(s);
-				return ;
-			}
-		}
+		if (s[*j] == '$')
+			ft_print_ent(mini, s, j);
+		else
+			printf("%c", s[*j]);
+		(*j)++;
 	}
-	(*i) += ft_strlen(s);
 }
 
 void	ft_echo(t_mini *mini, char **list)
@@ -109,52 +95,14 @@ void	ft_echo(t_mini *mini, char **list)
 		while (list[i][j])
 		{
 			if (list[i][j] == 39)
-			{
-				if (ft_check_quote(list[i] + j, 39))
-					printf("%c", list[i][j]);
-				j++;
-				while (list[i][j] && list[i][j] != 39)
-				{
-					if (ft_check_quote(list[i] + i, 39))
-						break ;
-					printf("%c", list[i][j]);
-					j++;
-				}
-				j++;
-			}
+				ft_echo_single_quote(list[i], &j);
 			else if (list[i][j] == 34)
-			{
-				if (ft_check_quote(list[i] + i, 34))
-					printf("%c", list[i][j]);
-				j++;
-				while (list[i][j] && list[i][j] != 34)
-				{
-					if (ft_check_quote(list[i] + i, 34))
-						break ;
-					if (list[i][j] == '$')
-						ft_print_ent(mini, list[i], &j);
-					else
-						printf("%c", list[i][j]);
-					j++;
-				}
-				j++;
-			}
+				ft_echo_double_quote(mini, list[i], &j);
 			else
-			{
-				while (list[i][j] && list[i][j] != 34 && list[i][j] != 39)
-				{
-					if (list[i][j] == '$')
-						ft_print_ent(mini, list[i], &j);
-					else
-						printf("%c", list[i][j]);
-					j++;
-				}
-			}
+				ft_echo_normal(mini, list[i], &j);
 		}
 		i++;
 	}
 	if (c == 0)
 		printf("\n");
 }
-
-		

@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 13:50:59 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/04/25 13:54:45 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/04/25 13:59:54 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	ft_create_pipes_fd(t_mini *mini);
 void	ft_close_pipe_wait_child(t_mini *mini, int i);
 void	ft_export(t_mini *mini, char **line);
 void	ft_unset(t_mini *mini, char **line);
+void	ft_print_ent(t_mini *mini, char *line, int *i);
 // void	sig_handler(int signo);
 int		ft_check_quote(char *line, int q);
 void	ft_dup_rest_of_line(char *line, int i, char **temp, int *len);
