@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 20:29:27 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/04/25 18:26:41 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/05/11 14:37:55 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,5 @@ void	ft_close_pipe_wait_child(t_mini *mini, int i)
 	while (++j < i)
 	{
 		waitpid(-1, &mini->err, 0);
-		if (mini->err != 0)
-			perror("cmd");
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 11:53:17 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/04/25 18:15:34 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/05/11 18:40:14 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ void	ft_echo(t_mini *mini, char **list)
 				ft_echo_normal(mini, list[i], &j);
 		}
 		i++;
+		if (list[i])
+			printf(" ");
 	}
 	if (c == 0)
 		printf("\n");
