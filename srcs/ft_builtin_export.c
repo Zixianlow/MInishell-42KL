@@ -3,45 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_builtin_export.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cping-xu <cping-xu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 15:05:48 by cping-xu          #+#    #+#             */
-/*   Updated: 2023/04/04 17:55:34 by cping-xu         ###   ########.fr       */
+/*   Updated: 2023/05/15 19:37:29 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_export(t_mini *mini)
-{
-	int	i;
-	int	j;
-	int	k;
-	int	ac;
-
-	ac = 0;
-	while (mini->env[ac])
-		ac++;
-	i = 0;
-	if (ac > 1)
-	{
-		while (++i < ac)
-		{
-			j = 0;
-			while (++j < ac - 1)
-			{
-				k = j + 1;
-				if (ft_strcmp(mini->env[j], mini->env[k]) > 0)
-					ft_swap(&mini->env[j--], &mini->env[k]);
-			}
-		}
-	}
-	i = 0;
-	while (++i < ac)
-		printf("%s\n", mini->env[i]);
-}
-
-int	check_copy(char **line)
+int	check_copy_d(char **line, t_mini *mini)
 {
 	int		i;
 	int		k;
@@ -52,7 +23,7 @@ int	check_copy(char **line)
 	l = 0;
 	while (line[i])
 	{
-		if (checkav(line[i]))
+		if (check_now_d(line[i], mini))
 			k++;
 		if (line[i][0] == '$')
 			l++;
@@ -63,21 +34,41 @@ int	check_copy(char **line)
 	return (k);
 }
 
-int	check_now(char *line)
+void	ft_update_temp(char **line, char **temp)
 {
 	int	i;
+	int	j;
+	int	k;
 
-	i = 0;
-	while (line[i])
+	i = -1;
+	while (line[++i])
 	{
-		if (line[i] == '=')
+		j = 0;
+		k = ft_len_to_eq(line[i]);
+		while (temp[j])
 		{
-			if (ft_isalpha(line[0]))
-				return (1);
+			if (!ft_strncmp(temp[j], line[i], k - 1))
+			{
+				if (temp[j][k] == '=' && line[i][k] == '=')
+				{
+					free(temp[j]);
+					temp[j] = ft_strdup(checkav(line[i]));
+				}
+			}
+			j++;
 		}
-		i++;
 	}
-	return (0);
+}
+
+void	ft_copy_env(t_mini *mini, char **temp, int *j)
+{
+	*j = 0;
+	while (mini->env[(*j) + 1])
+	{
+		temp[(*j)] = ft_strdup(mini->env[(*j)]);
+		free(mini->env[(*j)]);
+		(*j)++;
+	}
 }
 
 char	**edit_env(t_mini *mini, char **line)
@@ -85,26 +76,25 @@ char	**edit_env(t_mini *mini, char **line)
 	int		i;
 	int		j;
 	int		k;
+	int		l;
 	char	**temp;
 
 	j = 0;
-	i = check_copy(line);
+	i = check_copy_d(line, mini);
 	while (mini->env[j])
 		j++;
 	temp = malloc(sizeof(char *) * (i + j + 1));
-	j = 0;
-	while (mini->env[j + 1])
-	{
-		temp[j] = ft_strdup(mini->env[j]);
-		j++;
-	}
+	ft_copy_env(mini, temp, &j);
 	k = j;
 	i = -1;
 	while (line[++i])
-		if (check_now(line[i]))
+		if (check_now_d(line[i], mini))
 			temp[j++] = ft_strdup(checkav(line[i]));
 	temp[j] = ft_strdup(mini->env[k]);
+	free(mini->env[k]);
 	temp[j + 1] = NULL;
+	free(mini->env);
+	ft_update_temp(line, temp);
 	return (temp);
 }
 

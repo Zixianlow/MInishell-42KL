@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cping-xu <cping-xu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 17:55:53 by cping-xu          #+#    #+#             */
-/*   Updated: 2023/04/04 17:56:02 by cping-xu         ###   ########.fr       */
+/*   Updated: 2023/05/15 18:52:26 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,20 @@ int	ft_strcmp(char *s1, char *s2)
 		i++;
 	}
 	return (s1[i] - s2[i]);
+}
+
+int	ft_len_to_eq(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == '=')
+			break ;
+		i++;
+	}
+	return (i);
 }
 
 char	*checkav(char *line)

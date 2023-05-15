@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 13:50:59 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/05/15 16:46:03 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/05/15 20:59:34 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <limits.h>
 # include <unistd.h>
 # include <signal.h>
+# include <termios.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -44,7 +45,6 @@ typedef struct s_mini
 	char			*res;
 	char			*line;
 	char			*cmd_path;
-	char			**dir_list;
 	char			**env;
 	char			*env_path;
 	char			**path_list;
@@ -67,7 +67,7 @@ void	ft_close_pipe_wait_child(t_mini *mini, int i);
 void	ft_export(t_mini *mini, char **line);
 void	ft_unset(t_mini *mini, char **line);
 void	ft_print_ent(t_mini *mini, char *line, int *i);
-// void	sig_handler(int signo);
+void	sig_handler(int signo);
 int		ft_check_quote(char *line, int q);
 void	ft_dup_rest_of_line(char *line, int i, char **temp, int *len);
 char	*ft_env_to_line(char *line, char **env, int i);
@@ -93,5 +93,13 @@ char	*charcmp(char *pipe, int input, char *new);
 void	ft_parent_cmd_error(t_mini *mini, char *s);
 void	ft_free_echo_list(t_mini *mini);
 void	ft_free_pipe_list(t_mini *mini);
+int		ft_len_to_eq(char *line);
+void	print_export(t_mini *mini);
+int		check_now(char *line);
+int		check_copy(char **line);
+int		ft_chk_exist(t_mini *mini, char *line);
+int		check_now_d(char *line, t_mini *mini);
+int		ft_skip_redir(char **list, int *i);
+void	ft_check_n(char **s, int *i, int *c);
 
 #endif

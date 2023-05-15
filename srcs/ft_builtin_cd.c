@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 14:58:58 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/04/14 17:57:41 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/05/15 19:48:49 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ void	ft_cd_next(t_mini *mini, char **env, char **line)
 
 	getcwd(cwd, sizeof(cwd));
 	new = ft_user_input_cwd(cwd, line, env);
-	mini->dir_list = ft_split(line[1], '/');
 	old = ft_strdup(cwd);
 	if (access(new, 0) == 0)
 	{

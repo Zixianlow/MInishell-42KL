@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 19:45:45 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/05/15 16:33:17 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/05/15 19:55:48 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,21 @@ void	ft_here_fd(t_mini *mini, int *f, char *line)
 	int	fd;
 
 	mini->here_fd[*f] = malloc(2);
-	mini->heredoc = ft_strdup("heredoc > ");
 	pipe(mini->here_fd[*f]);
 	while (1)
 	{
+		mini->here_line = NULL;
 		mini->here_line = readline(mini->heredoc);
 		l = ft_strlen(line) + 1;
 		if (!ft_strncmp(mini->here_line, line, l))
+		{
+			free(mini->here_line);
 			break ;
+		}
 		fd = mini->here_fd[*f][1];
 		write(fd, mini->here_line, ft_strlen(mini->here_line));
 		write(fd, "\n", 1);
+		free(mini->here_line);
 	}
 	(*f)++;
 	mini->here_count = *f;

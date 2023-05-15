@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:57:57 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/04/25 13:59:45 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/05/15 20:59:24 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,52 @@ void	ft_print_ent(t_mini *mini, char *line, int *i)
 		}
 	}
 	(*i) += ft_strlen(s);
+}
+
+int	ft_skip_redir(char **list, int *i)
+{
+	if (!ft_strncmp(list[*i], ">", 2))
+	{
+		(*i) += 2;
+		return (1);
+	}
+	else if (!ft_strncmp(list[*i], ">", 2))
+	{
+		(*i) += 2;
+		return (1);
+	}
+	else if (!ft_strncmp(list[*i], ">>", 3))
+	{
+		(*i) += 2;
+		return (1);
+	}
+	else if (!ft_strncmp(list[*i], "<<", 3))
+	{
+		(*i) += 2;
+		return (1);
+	}
+	return (0);
+}
+
+void	ft_check_n(char **s, int *i, int *c)
+{
+	int	j;
+
+	j = 0;
+	while (s[*i] && s[*i][j])
+	{
+		while (s[*i][j] == ' ')
+			j++;
+		if (s[*i][j] == '-')
+			j++;
+		if (s[*i][j] != 'n')
+			return ;
+		while (s[*i][j] == 'n')
+			j++;
+		if (s[*i][j] == '-')
+			return ;
+		(*i)++;
+		(*c)++;
+		j = 0;
+	}
 }

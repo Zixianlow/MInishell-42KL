@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 13:56:11 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/05/15 16:47:28 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/05/15 20:52:38 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,14 +93,19 @@ void	main_loop(t_mini *mini)
 
 int	main(int ac, char **av, char **env)
 {
-	t_mini	mini;
+	t_mini			mini;
+	struct termios	term;
 
 	(void) ac;
 	(void) av;
 	mini.env = ft_strdup_multi(env);
-	// signal(SIGINT, sig_handler);
-	// signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, sig_handler);
+	signal(SIGQUIT, SIG_IGN);
+	tcgetattr(STDIN_FILENO, &term);
+	term.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 	mini.res = ft_strdup("minishell > ");
+	mini.heredoc = ft_strdup("heredoc > ");
 	mini.err = 0;
 	main_loop(&mini);
 }
