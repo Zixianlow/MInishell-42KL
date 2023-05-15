@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:57:57 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/05/15 20:59:24 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/05/15 21:10:12 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	ft_check_n(char **s, int *i, int *c)
 			return ;
 		while (s[*i][j] == 'n')
 			j++;
-		if (s[*i][j] == '-')
+		if (s[*i][j] != '\0')
 			return ;
 		(*i)++;
 		(*c)++;

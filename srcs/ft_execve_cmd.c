@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 20:51:15 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/05/11 14:40:16 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/05/15 21:19:46 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ void	ft_execve_cmd(t_mini	*mini, char **line)
 
 	i = 0;
 	mini->env_path = ft_px_get_env_path(mini->env);
+	if (!mini->env_path)
+		exit(0);
 	mini->path_list = ft_split(mini->env_path, ':');
 	mini->cmd_path = ft_get_command_path(mini->path_list, line[0]);
 	if (!mini->cmd_path)

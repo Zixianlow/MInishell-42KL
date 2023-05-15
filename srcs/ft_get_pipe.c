@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 19:45:45 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/05/15 19:55:48 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/05/15 21:27:02 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	ft_create_pipes_fd(t_mini *mini)
 	if (!p)
 		return ;
 	else
-		mini->fd = malloc(sizeof(int *) * (p - 1));
+		mini->fd = malloc(sizeof(int *) * (p));
 	i = 0;
 	while (i < p)
 	{
