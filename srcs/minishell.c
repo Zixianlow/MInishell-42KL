@@ -6,44 +6,11 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 13:56:11 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/05/15 16:35:04 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/05/15 16:47:28 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	ft_free_pipe_list(t_mini *mini)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (mini->pipe_line[i])
-	{
-		j = 0;
-		while (mini->pipe_line[i][j])
-		{
-			free(mini->pipe_line[i][j]);
-			j++;
-		}
-		free(mini->pipe_line[i]);
-		i++;
-	}
-	free(mini->pipe_line);
-	i = 0;
-	while (mini->echo_line[i])
-	{
-		j = 0;
-		while (mini->echo_line[i][j])
-		{
-			free(mini->echo_line[i][j]);
-			j++;
-		}
-		free(mini->echo_line[i]);
-		i++;
-	}
-	free(mini->echo_line);
-}
 
 void	ft_parse_line(t_mini	*mini)
 {
@@ -100,6 +67,28 @@ void	runline(t_mini *mini)
 		ft_child_cmd(mini, &i);
 	ft_close_pipe_wait_child(mini, i);
 	ft_free_pipe_list(mini);
+	ft_free_echo_list(mini);
+}
+
+void	main_loop(t_mini *mini)
+{
+	while (1)
+	{
+		mini->temp_in = dup(0);
+		mini->temp_out = dup(1);
+		mini->line = NULL;
+		print_default(mini);
+		if (!*mini->line)
+		{
+			free(mini->line);
+			continue ;
+		}
+		if (mini->line)
+			runline(mini);
+		close(mini->temp_in);
+		close(mini->temp_out);
+		free(mini->line);
+	}
 }
 
 int	main(int ac, char **av, char **env)
@@ -113,21 +102,5 @@ int	main(int ac, char **av, char **env)
 	// signal(SIGQUIT, SIG_IGN);
 	mini.res = ft_strdup("minishell > ");
 	mini.err = 0;
-	while (1)
-	{
-		mini.temp_in = dup(0);
-		mini.temp_out = dup(1);
-		mini.line = NULL;
-		print_default(&mini);
-		if (!*mini.line)
-		{
-			free(mini.line);
-			continue ;
-		}
-		if (mini.line)
-			runline(&mini);
-		close(mini.temp_in);
-		close(mini.temp_out);
-		free(mini.line);
-	}
+	main_loop(&mini);
 }

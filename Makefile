@@ -6,7 +6,7 @@
 #    By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/04 11:27:38 by lzi-xian          #+#    #+#              #
-#    Updated: 2023/05/15 16:06:52 by lzi-xian         ###   ########.fr        #
+#    Updated: 2023/05/15 16:46:20 by lzi-xian         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ MAN_FILES	=	minishell					\
 				ft_sigaction				\
 				ft_cmd_with_builtin			\
 				ft_close_pipe_wait_child	\
+				ft_free_list				\
 				ft_get_pipe					\
 				ft_execve_cmd				\
 				ft_remove_in_out			\

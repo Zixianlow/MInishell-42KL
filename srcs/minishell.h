@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 13:50:59 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/05/15 16:33:28 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/05/15 16:46:03 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,9 @@ char	*ft_line_dup(char *s);
 char	**ft_remove_in_out_from_list(char ***list, int l);
 void	ft_handle_in_out_file(t_mini *mini, int n);
 void	ft_get_pipe_line(t_mini *mini);
-char	*charcmp(char *pipe, int input);
+char	*charcmp(char *pipe, int input, char *new);
 void	ft_parent_cmd_error(t_mini *mini, char *s);
+void	ft_free_echo_list(t_mini *mini);
+void	ft_free_pipe_list(t_mini *mini);
 
 #endif

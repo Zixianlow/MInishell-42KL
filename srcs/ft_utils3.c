@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 15:19:53 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/05/15 16:21:51 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/05/15 16:38:26 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,12 @@ char	*ft_strtrim2(char *s1, char sep1, char sep2)
 	return (s);
 }
 
-char	*charcmp(char *pipe, int input)
+char	*charcmp(char *pipe, int input, char *new)
 {
 	int		i;
 	char	*temp;
 	char	*temp1;
 	char	*temp2;
-	char	*new;
 
 	i = -1;
 	new = ft_itoa(input / 256);

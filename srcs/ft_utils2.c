@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 18:18:00 by cping-xu          #+#    #+#             */
-/*   Updated: 2023/04/25 13:52:43 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/05/15 16:39:06 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	ft_treat_pipe_line(char ***pipe_line, char **env, t_mini *mini)
 		j = 0;
 		while (pipe_line[i][j])
 		{
-			pipe_line[i][j] = charcmp(pipe_line[i][j], mini->err);
+			pipe_line[i][j] = charcmp(pipe_line[i][j], mini->err, NULL);
 			mini->echo_line[i][j] = ft_strdup(pipe_line[i][j]);
 			pipe_line[i][j] = ft_treat_line(pipe_line[i][j]);
 			j++;
