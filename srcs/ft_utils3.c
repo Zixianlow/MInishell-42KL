@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 15:19:53 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/04/14 18:04:47 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/05/15 16:21:51 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ char	*charcmp(char *pipe, int input)
 			i = -1;
 		}
 	}
+	free(new);
 	return (pipe);
 }
 

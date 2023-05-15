@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 13:56:11 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/05/09 20:23:39 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/05/15 16:35:04 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,19 @@ void	ft_free_pipe_list(t_mini *mini)
 		i++;
 	}
 	free(mini->pipe_line);
+	i = 0;
+	while (mini->echo_line[i])
+	{
+		j = 0;
+		while (mini->echo_line[i][j])
+		{
+			free(mini->echo_line[i][j]);
+			j++;
+		}
+		free(mini->echo_line[i]);
+		i++;
+	}
+	free(mini->echo_line);
 }
 
 void	ft_parse_line(t_mini	*mini)
@@ -106,9 +119,15 @@ int	main(int ac, char **av, char **env)
 		mini.temp_out = dup(1);
 		mini.line = NULL;
 		print_default(&mini);
+		if (!*mini.line)
+		{
+			free(mini.line);
+			continue ;
+		}
 		if (mini.line)
 			runline(&mini);
 		close(mini.temp_in);
 		close(mini.temp_out);
+		free(mini.line);
 	}
 }
