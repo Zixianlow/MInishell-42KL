@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 15:05:48 by cping-xu          #+#    #+#             */
-/*   Updated: 2023/05/15 19:37:29 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/05/16 15:05:07 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ void	ft_copy_env(t_mini *mini, char **temp, int *j)
 	while (mini->env[(*j) + 1])
 	{
 		temp[(*j)] = ft_strdup(mini->env[(*j)]);
-		free(mini->env[(*j)]);
 		(*j)++;
 	}
 }
@@ -91,8 +90,10 @@ char	**edit_env(t_mini *mini, char **line)
 		if (check_now_d(line[i], mini))
 			temp[j++] = ft_strdup(checkav(line[i]));
 	temp[j] = ft_strdup(mini->env[k]);
-	free(mini->env[k]);
 	temp[j + 1] = NULL;
+	i = -1;
+	while (mini->env[++i])
+		free(mini->env[i]);
 	free(mini->env);
 	ft_update_temp(line, temp);
 	return (temp);

@@ -6,7 +6,7 @@
 /*   By: lzi-xian <lzi-xian@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 19:37:03 by lzi-xian          #+#    #+#             */
-/*   Updated: 2023/05/15 19:38:19 by lzi-xian         ###   ########.fr       */
+/*   Updated: 2023/05/16 15:05:03 by lzi-xian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,16 +87,12 @@ int	ft_chk_exist(t_mini *mini, char *line)
 
 	i = 0;
 	j = ft_len_to_eq(line);
-	while (mini->env[i + 1])
+	while (mini->env[i])
 	{
-		if (!ft_strncmp(mini->env[i], line, j - 1))
-			if (mini->env[i][j] == '=' && line[j] == '=')
-				return (0);
+		if (!ft_strncmp(mini->env[i], line, j))
+			return (0);
 		i++;
 	}
-	if (!ft_strncmp(mini->env[i], line, j - 1))
-		if (mini->env[i][j] == '=' && line[j] == '=')
-			return (0);
 	return (1);
 }
 
